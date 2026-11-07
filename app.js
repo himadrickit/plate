@@ -165,6 +165,16 @@ function slugOf(path) {
 let cat = "all";
 let query = "";
 
+function icon(name) {
+  const id = document.getElementById("i-" + name) ? "i-" + name : "i-plate";
+  const s = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  const u = document.createElementNS("http://www.w3.org/2000/svg", "use");
+  s.setAttribute("class", "ic");
+  u.setAttribute("href", "#" + id);
+  s.append(u);
+  return s;
+}
+
 function thumb(el) {
   const p = el.plate;
   const T = 128 * Math.min(2, window.devicePixelRatio || 1);
@@ -188,7 +198,7 @@ function filter() {
     sec.hidden = n === 0;
     shown += n;
   });
-  document.querySelectorAll(".chip").forEach(c => c.classList.toggle("on", c.dataset.cat === cat));
+  document.querySelectorAll(".rb").forEach(c => c.classList.toggle("on", c.dataset.cat === cat));
   $("none").hidden = shown > 0;
 }
 
@@ -198,7 +208,7 @@ function choose(p) {
 }
 
 function menu() {
-  const list = $("list"), chips = $("chips");
+  const list = $("list");
   const groups = {};
   for (const p of all) (groups[p.cat] = groups[p.cat] || []).push(p);
   const cats = Object.keys(groups).sort();
@@ -213,7 +223,7 @@ function menu() {
     const sec = document.createElement("section");
     sec.dataset.cat = name;
     const h = document.createElement("h4");
-    h.textContent = name + " (" + groups[name].length + ")";
+    h.append(icon(name), name + " (" + groups[name].length + ")");
     const box = document.createElement("div");
     for (const p of groups[name]) {
       const b = document.createElement("button");
@@ -237,11 +247,12 @@ function menu() {
   for (const name of ["all", ...cats]) {
     const b = document.createElement("button");
     b.type = "button";
-    b.className = "chip";
-    b.textContent = name;
+    b.className = "rb";
+    b.title = name;
     b.dataset.cat = name;
     b.onclick = () => { cat = name; filter(); };
-    chips.append(b);
+    b.append(icon(name), name);
+    $("rail").append(b);
   }
 }
 

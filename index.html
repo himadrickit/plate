@@ -9,29 +9,61 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="i-all" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></symbol>
+<symbol id="i-mosaic" viewBox="0 0 24 24"><rect x="3" y="3" width="11" height="7"/><rect x="14" y="3" width="7" height="11"/><rect x="10" y="14" width="11" height="7"/><rect x="3" y="10" width="7" height="11"/></symbol>
+<symbol id="i-magazine" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="1"/><rect x="7" y="6" width="10" height="6"/><path d="M7 15h10M7 18h6"/></symbol>
+<symbol id="i-story" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M7 9h10M7 15h10"/></symbol>
+<symbol id="i-polaroid" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="1"/><rect x="6.5" y="5.5" width="11" height="10"/><path d="M8 18.5h5"/></symbol>
+<symbol id="i-shapes" viewBox="0 0 24 24"><circle cx="7.5" cy="7.5" r="4"/><rect x="13" y="13" width="8" height="8" rx="1"/><path d="M7.5 14l4 7h-8z"/></symbol>
+<symbol id="i-film" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M7 4v16M17 4v16M3 9h4M3 15h4M17 9h4M17 15h4"/></symbol>
+<symbol id="i-social" viewBox="0 0 24 24"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.2 10.8l7.6-3.6M8.2 13.2l7.6 3.6"/></symbol>
+<symbol id="i-gallery" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="1"/><rect x="6" y="7" width="12" height="10"/><path d="M6 15l4-4 3 3 2-2 3 3"/></symbol>
+<symbol id="i-scrapbook" viewBox="0 0 24 24"><rect x="5" y="6" width="11" height="13" transform="rotate(-8 10.5 12.5)"/><rect x="9" y="5" width="11" height="13" transform="rotate(7 14.5 11.5)"/></symbol>
+<symbol id="i-community" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14c2.4 0 4 1.8 4 4"/></symbol>
+<symbol id="i-plate" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 3v18M3 12h9"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></symbol>
+<symbol id="i-save" viewBox="0 0 24 24"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v5h7V3M8 21v-7h8v7"/></symbol>
+<symbol id="i-open" viewBox="0 0 24 24"><path d="M3 6h6l2 2h10v11H3z"/></symbol>
+<symbol id="i-export" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"/></symbol>
+<symbol id="i-post" viewBox="0 0 24 24"><path d="M12 21V9M7 14l5-5 5 5M4 4h16"/></symbol>
+<symbol id="i-vsplit" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M12 4v16"/></symbol>
+<symbol id="i-hsplit" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 12h18"/></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></symbol>
+<symbol id="i-clear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></symbol>
+<symbol id="i-gap" viewBox="0 0 24 24"><path d="M4 6v12M20 6v12M8 12h8M10 10l-2 2 2 2M14 10l2 2-2 2"/></symbol>
+<symbol id="i-radius" viewBox="0 0 24 24"><path d="M4 20V10a6 6 0 016-6h10"/></symbol>
+<symbol id="i-bg" viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 11a6 6 0 01-12 0c0-4.5 6-11 6-11z"/></symbol>
+<symbol id="i-zoom" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5M11 8v6M8 11h6"/></symbol>
+</svg>
 <aside id="side">
-  <input id="q" type="search" placeholder="search templates  ( / )" autocomplete="off" spellcheck="false">
-  <nav id="chips"></nav>
-  <p id="none" hidden>nothing matches</p>
-  <div id="list"></div>
+  <nav id="rail"></nav>
+  <div id="pane">
+    <div id="qwrap"><svg class="ic"><use href="#i-search"/></svg><input id="q" type="search" placeholder="search  ( / )" autocomplete="off" spellcheck="false"></div>
+    <p id="none" hidden>nothing matches</p>
+    <div id="list"></div>
+  </div>
 </aside>
 <main>
   <canvas id="cv"></canvas>
   <p id="hint">click a cell to add a photo / drag to move / scroll to zoom</p>
 </main>
 <section id="ctl">
-  <label>gap <input id="gap" type="range" min="0" max="60"></label>
-  <label>radius <input id="radius" type="range" min="0" max="120"></label>
-  <label>bg <input id="bg" type="color"></label>
-  <label>zoom <input id="zoom" type="range" min="1" max="5" step="0.01" value="1"></label>
-  <button id="clear">clear photo</button>
-  <button id="vsplit">split |</button>
-  <button id="hsplit">split &mdash;</button>
-  <button id="rm">remove cell</button>
-  <button id="save">save .plate</button>
-  <button id="open">open .plate</button>
-  <button id="export">export png</button>
-  <button id="post">post template</button>
+  <label><svg class="ic"><use href="#i-gap"/></svg>gap <input id="gap" type="range" min="0" max="60"></label>
+  <label><svg class="ic"><use href="#i-radius"/></svg>radius <input id="radius" type="range" min="0" max="120"></label>
+  <label><svg class="ic"><use href="#i-bg"/></svg>bg <input id="bg" type="color"></label>
+  <label><svg class="ic"><use href="#i-zoom"/></svg>zoom <input id="zoom" type="range" min="1" max="5" step="0.01" value="1"></label>
+  <hr>
+  <button id="clear"><svg class="ic"><use href="#i-clear"/></svg>clear photo</button>
+  <button id="vsplit"><svg class="ic"><use href="#i-vsplit"/></svg>split |</button>
+  <button id="hsplit"><svg class="ic"><use href="#i-hsplit"/></svg>split &mdash;</button>
+  <button id="rm"><svg class="ic"><use href="#i-trash"/></svg>remove cell</button>
+  <hr>
+  <button id="save"><svg class="ic"><use href="#i-save"/></svg>save .plate</button>
+  <button id="open"><svg class="ic"><use href="#i-open"/></svg>open .plate</button>
+  <button id="export"><svg class="ic"><use href="#i-export"/></svg>export png</button>
+  <button id="post"><svg class="ic"><use href="#i-post"/></svg>post template</button>
   <input id="pick" type="file" accept="image/*" hidden>
   <input id="load" type="file" accept=".plate" hidden>
 </section>
