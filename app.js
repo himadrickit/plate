@@ -204,6 +204,7 @@ function filter() {
 
 function choose(p) {
   use(p);
+  if (mq.matches) setSheet("");
   if (p.slug) history.replaceState(null, "", "#" + p.slug);
 }
 
@@ -324,22 +325,48 @@ function hit(pt) {
   return -1;
 }
 
+const ptrs = new Map();
+let pinch = null;
+
+function tapSlop() {
+  return 8 * plate.w / cv.getBoundingClientRect().width;
+}
+
 cv.addEventListener("pointerdown", e => {
+  ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  cv.setPointerCapture(e.pointerId);
+  if (ptrs.size === 2) {
+    const [p, q] = [...ptrs.values()];
+    const i = hit(at({ clientX: (p.x + q.x) / 2, clientY: (p.y + q.y) / 2 }));
+    drag = null;
+    if (i >= 0) { sel = i; syncZoom(); redraw(); }
+    pinch = { d: Math.hypot(p.x - q.x, p.y - q.y), z: slots[sel].z };
+    return;
+  }
   const pt = at(e);
   const i = hit(pt);
   if (i < 0) return;
   sel = i;
   syncZoom();
   redraw();
-  cv.setPointerCapture(e.pointerId);
   drag = { i, sx: pt.x, sy: pt.y, ox: slots[i].x, oy: slots[i].y, moved: false };
 });
 
 cv.addEventListener("pointermove", e => {
+  if (!ptrs.has(e.pointerId)) return;
+  ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  if (pinch && ptrs.size === 2) {
+    const [p, q] = [...ptrs.values()];
+    const d = Math.hypot(p.x - q.x, p.y - q.y);
+    slots[sel].z = Math.min(5, Math.max(1, pinch.z * d / pinch.d));
+    syncZoom();
+    redraw();
+    return;
+  }
   if (!drag) return;
   const pt = at(e);
   const dx = pt.x - drag.sx, dy = pt.y - drag.sy;
-  if (Math.hypot(dx, dy) > 6) drag.moved = true;
+  if (Math.hypot(dx, dy) > tapSlop()) drag.moved = true;
   if (drag.moved && slots[drag.i].img) {
     slots[drag.i].x = drag.ox + dx;
     slots[drag.i].y = drag.oy + dy;
@@ -347,11 +374,24 @@ cv.addEventListener("pointermove", e => {
   }
 });
 
-cv.addEventListener("pointerup", () => {
-  if (drag && !drag.moved) {
-    $("pick").dataset.cell = drag.i;
+function release(e) {
+  ptrs.delete(e.pointerId);
+  if (ptrs.size < 2) pinch = null;
+}
+
+cv.addEventListener("pointerup", e => {
+  const tap = drag && !drag.moved && ptrs.size === 1;
+  const i = drag && drag.i;
+  release(e);
+  drag = null;
+  if (tap) {
+    $("pick").dataset.cell = i;
     $("pick").click();
   }
+});
+
+cv.addEventListener("pointercancel", e => {
+  release(e);
   drag = null;
 });
 
@@ -365,12 +405,16 @@ cv.addEventListener("wheel", e => {
 }, { passive: false });
 
 $("pick").onchange = async e => {
-  const f = e.target.files[0];
-  const i = +e.target.dataset.cell;
+  const files = [...e.target.files];
+  let i = +e.target.dataset.cell;
   e.target.value = "";
-  if (!f) return;
-  slots[i] = { img: await loadImage(f), z: 1, x: 0, y: 0 };
-  redraw();
+  for (const f of files) {
+    if (i < 0) break;
+    slots[i] = { img: await loadImage(f), z: 1, x: 0, y: 0 };
+    redraw();
+    i = slots.findIndex(s => !s.img);
+  }
+  syncZoom();
 };
 
 for (const id of ["gap", "radius"]) {
@@ -439,7 +483,19 @@ $("load").onchange = async e => {
 
 $("export").onclick = () => {
   paint(ctx, plate, slots, 1, false);
-  cv.toBlob(b => { download(b, "collage.png"); redraw(); });
+  cv.toBlob(async b => {
+    redraw();
+    const file = new File([b], "collage.png", { type: "image/png" });
+    if (touch.matches && navigator.canShare && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({ files: [file] });
+        return;
+      } catch (err) {
+        if (err.name === "AbortError") return;
+      }
+    }
+    download(b, "collage.png");
+  });
 };
 
 $("post").onclick = () => {
@@ -480,5 +536,20 @@ window.addEventListener("hashchange", pickFromHash);
 if ("serviceWorker" in navigator && location.protocol !== "file:") {
   navigator.serviceWorker.register("sw.js");
 }
+
+const mq = matchMedia("(max-width: 700px)");
+const touch = matchMedia("(pointer: coarse)");
+
+function setSheet(name) {
+  document.body.dataset.sheet = name;
+  document.querySelectorAll("#tabs [data-sheet]").forEach(b => b.classList.toggle("on", b.dataset.sheet === name));
+}
+
+document.querySelectorAll("#tabs [data-sheet]").forEach(b => {
+  b.onclick = () => setSheet(document.body.dataset.sheet === b.dataset.sheet ? "" : b.dataset.sheet);
+});
+$("tab-exp").onclick = () => $("export").click();
+
+if (touch.matches) $("hint").textContent = "tap a cell to add photos / drag to move / pinch to zoom";
 
 boot();

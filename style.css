@@ -51,14 +51,28 @@ main { display: flex; flex-direction: column; align-items: center; justify-conte
 #ctl button .ic { margin: 0; }
 #ctl button:hover { border-color: var(--fg); }
 
+#tabs { display: none; }
+#cv, .tile, .rb { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; }
+
 @media (max-width: 700px) {
-  body { grid-template-columns: 1fr; height: auto; }
-  aside { flex-direction: column; border-right: 0; border-bottom: 1px solid var(--line); }
+  body { display: flex; flex-direction: column; height: 100dvh; overscroll-behavior: none; --sheet: 0px; }
+  body[data-sheet="tpl"], body[data-sheet="ctl"] { --sheet: 44dvh; }
+  main { order: 1; flex: 1; min-height: 0; padding: 8px; }
+  #cv { max-height: calc(100dvh - var(--sheet) - 112px - env(safe-area-inset-bottom)); }
+  #hint { font-size: 11px; margin-top: 6px; }
+  aside, #ctl { display: none; order: 2; height: 44dvh; border: 0; border-top: 1px solid var(--line); background: var(--pane); }
+  body[data-sheet="tpl"] aside { display: flex; flex-direction: column; }
+  body[data-sheet="ctl"] #ctl { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; align-content: start; padding: 12px; }
+  #ctl label, #ctl hr { grid-column: 1 / -1; margin: 0; }
+  #ctl button { min-height: 44px; margin: 0; }
   #rail { flex-direction: row; width: auto; padding: 0 8px; border-right: 0; border-bottom: 1px solid var(--line); overflow-x: auto; }
   .rb { flex: none; width: 66px; border-left: 0; border-bottom: 2px solid transparent; }
   .rb.on { border-bottom-color: var(--acc); }
-  #list { flex: none; display: flex; gap: 8px; overflow-x: auto; overflow-y: hidden; padding: 8px 12px; }
-  #list section, #list section > div { display: contents; }
-  #list h4 { display: none; }
-  .tile { flex: none; width: 96px; }
+  #pane { min-height: 0; }
+  #q { font-size: 16px; }
+  #list section > div { grid-template-columns: repeat(3, 1fr); }
+  #tabs { display: flex; order: 3; border-top: 1px solid var(--line); background: var(--pane); padding-bottom: env(safe-area-inset-bottom); }
+  #tabs button { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 0; background: none; border: 0; color: var(--dim); font: inherit; font-size: 10px; cursor: pointer; }
+  #tabs button .ic { width: 22px; height: 22px; margin: 0; }
+  #tabs button.on { color: var(--acc); }
 }

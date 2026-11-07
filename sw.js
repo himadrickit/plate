@@ -1,5 +1,5 @@
 // stale-while-revalidate for same-origin files: instant repeat loads, works offline
-const CACHE = "plate-v1";
+const CACHE = "plate-v2";
 
 self.addEventListener("install", () => self.skipWaiting());
 
