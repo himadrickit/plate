@@ -5,10 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>plate</title>
 <link rel="icon" href="data:,">
+<link rel="preload" href="plates.bundle" as="fetch" crossorigin>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<aside id="side"></aside>
+<aside id="side">
+  <input id="q" type="search" placeholder="search templates  ( / )" autocomplete="off" spellcheck="false">
+  <nav id="chips"></nav>
+  <p id="none" hidden>nothing matches</p>
+  <div id="list"></div>
+</aside>
 <main>
   <canvas id="cv"></canvas>
   <p id="hint">click a cell to add a photo / drag to move / scroll to zoom</p>
@@ -29,7 +35,7 @@
   <input id="pick" type="file" accept="image/*" hidden>
   <input id="load" type="file" accept=".plate" hidden>
 </section>
-<script src="plate.js"></script>
-<script src="app.js"></script>
+<script src="plate.js" defer></script>
+<script src="app.js" defer></script>
 </body>
 </html>

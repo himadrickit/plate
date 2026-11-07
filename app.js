@@ -52,7 +52,7 @@ function trace(c, shape, x, y, w, h, rad) {
   }
 }
 
-function paint(c, p, items, s, hint, sel) {
+function paint(c, p, items, s, hint, sel, lite) {
   c.setTransform(s, 0, 0, s, 0, 0);
   c.shadowColor = "transparent";
   if (p.bg2) {
@@ -74,7 +74,7 @@ function paint(c, p, items, s, hint, sel) {
     c.rotate(cell.rot * Math.PI / 180);
     let x = -r.w / 2, y = -r.h / 2, w = r.w, h = r.h;
     if (frame || cell.shadow) {
-      if (cell.shadow) {
+      if (cell.shadow && !lite) {
         c.shadowColor = "rgba(0,0,0,0.35)";
         c.shadowBlur = 24 * s;
         c.shadowOffsetY = 8 * s;
@@ -119,9 +119,17 @@ function paint(c, p, items, s, hint, sel) {
   });
 }
 
+let queued = false;
+
 function redraw() {
-  cv.width = plate.w;
-  cv.height = plate.h;
+  if (queued) return;
+  queued = true;
+  requestAnimationFrame(() => { queued = false; draw(); });
+}
+
+function draw() {
+  if (cv.width !== plate.w) cv.width = plate.w;
+  if (cv.height !== plate.h) cv.height = plate.h;
   paint(ctx, plate, slots, 1, true, sel);
 }
 
@@ -132,7 +140,11 @@ function use(p) {
   $("gap").value = p.gap;
   $("radius").value = p.radius;
   $("bg").value = p.bg;
-  document.querySelectorAll("#side canvas").forEach(c => c.classList.toggle("on", c.plate === p));
+  document.querySelectorAll(".tile").forEach(b => {
+    const on = b.plate === p;
+    b.classList.toggle("on", on);
+    if (on) b.scrollIntoView({ block: "nearest", inline: "nearest" });
+  });
   syncZoom();
   redraw();
 }
@@ -146,25 +158,90 @@ function folderOf(path) {
   return parts[0] === "templates" ? parts[1] : parts[0];
 }
 
+function slugOf(path) {
+  return path.replace(/^templates\//, "").replace(/\.plate$/, "");
+}
+
+let cat = "all";
+let query = "";
+
+function thumb(el) {
+  const p = el.plate;
+  const T = 128 * Math.min(2, window.devicePixelRatio || 1);
+  const k = T / Math.max(p.w, p.h);
+  el.width = Math.round(p.w * k);
+  el.height = Math.round(p.h * k);
+  paint(el.getContext("2d"), p, null, k, false, -1, true);
+}
+
+function filter() {
+  const q = query.trim().toLowerCase();
+  let shown = 0;
+  document.querySelectorAll("#list section").forEach(sec => {
+    let n = 0;
+    const inCat = cat === "all" || sec.dataset.cat === cat;
+    sec.querySelectorAll(".tile").forEach(t => {
+      const ok = inCat && (!q || t.dataset.q.includes(q));
+      t.hidden = !ok;
+      if (ok) n++;
+    });
+    sec.hidden = n === 0;
+    shown += n;
+  });
+  document.querySelectorAll(".chip").forEach(c => c.classList.toggle("on", c.dataset.cat === cat));
+  $("none").hidden = shown > 0;
+}
+
+function choose(p) {
+  use(p);
+  if (p.slug) history.replaceState(null, "", "#" + p.slug);
+}
+
 function menu() {
-  const side = $("side");
+  const list = $("list"), chips = $("chips");
   const groups = {};
   for (const p of all) (groups[p.cat] = groups[p.cat] || []).push(p);
-  for (const cat of Object.keys(groups).sort()) {
-    const h = document.createElement("h4");
-    h.textContent = cat;
-    side.appendChild(h);
-    for (const p of groups[cat]) {
-      const t = document.createElement("canvas");
-      const s = 160 / p.w;
-      t.width = 160;
-      t.height = Math.round(p.h * s);
-      t.title = p.name + (p.author ? " by " + p.author : "");
-      t.plate = p;
-      paint(t.getContext("2d"), p, null, s, false);
-      t.onclick = () => use(p);
-      side.appendChild(t);
+  const cats = Object.keys(groups).sort();
+  const io = new IntersectionObserver(es => {
+    for (const e of es) {
+      if (!e.isIntersecting) continue;
+      thumb(e.target);
+      io.unobserve(e.target);
     }
+  }, { root: list, rootMargin: "300px" });
+  for (const name of cats) {
+    const sec = document.createElement("section");
+    sec.dataset.cat = name;
+    const h = document.createElement("h4");
+    h.textContent = name + " (" + groups[name].length + ")";
+    const box = document.createElement("div");
+    for (const p of groups[name]) {
+      const b = document.createElement("button");
+      const c = document.createElement("canvas");
+      const l = document.createElement("span");
+      b.type = "button";
+      b.className = "tile";
+      b.plate = p;
+      b.title = p.name + (p.author ? " by " + p.author : "");
+      b.dataset.q = (p.name + " " + name).toLowerCase();
+      b.onclick = () => choose(p);
+      c.plate = p;
+      l.textContent = p.name;
+      b.append(c, l);
+      box.append(b);
+      io.observe(c);
+    }
+    sec.append(h, box);
+    list.append(sec);
+  }
+  for (const name of ["all", ...cats]) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "chip";
+    b.textContent = name;
+    b.dataset.cat = name;
+    b.onclick = () => { cat = name; filter(); };
+    chips.append(b);
   }
 }
 
@@ -173,28 +250,49 @@ const FALLBACK = [
   "cell = 0 0 50 50", "cell = 50 0 50 50", "cell = 0 50 50 50", "cell = 50 50 50 50",
 ].join("\n");
 
+function pickFromHash() {
+  const want = decodeURIComponent(location.hash.slice(1));
+  use(all.find(p => p.slug === want) || all[0]);
+}
+
 async function boot() {
   try {
-    const res = await fetch("plates.txt");
-    if (!res.ok) throw new Error("plates.txt " + res.status);
-    const list = (await res.text()).split("\n").filter(Boolean);
-    for (const path of list) {
-      const r = await fetch(path);
-      if (!r.ok) continue;
-      const p = parsePlate(await r.text());
+    const res = await fetch("plates.bundle");
+    if (!res.ok) throw new Error("plates.bundle " + res.status);
+    for (const chunk of (await res.text()).split(/^--- /m).slice(1)) {
+      const nl = chunk.indexOf("\n");
+      const path = chunk.slice(0, nl).trim();
+      const p = parsePlate(chunk.slice(nl + 1));
       p.cat = p.category || folderOf(path);
+      p.slug = slugOf(path);
       all.push(p);
     }
   } catch (err) {
-    $("side").textContent = "templates not loaded. serve the folder over http (python3 -m http.server) or use GitHub Pages.";
+    $("hint").textContent = "templates not loaded: serve the folder over http (python3 -m http.server) or use GitHub Pages";
   }
   if (!all.length) {
     const p = parsePlate(FALLBACK);
     p.cat = "grid";
+    p.slug = "grid/quad";
     all.push(p);
   }
   menu();
-  use(all[0]);
+  filter();
+  pickFromHash();
+}
+
+async function loadImage(file) {
+  const bm = await createImageBitmap(file);
+  const k = 2400 / Math.max(bm.width, bm.height);
+  if (k >= 1) return bm;
+  const oc = document.createElement("canvas");
+  oc.width = Math.round(bm.width * k);
+  oc.height = Math.round(bm.height * k);
+  const g = oc.getContext("2d");
+  g.imageSmoothingQuality = "high";
+  g.drawImage(bm, 0, 0, oc.width, oc.height);
+  bm.close();
+  return createImageBitmap(oc);
 }
 
 function at(e) {
@@ -260,7 +358,7 @@ $("pick").onchange = async e => {
   const i = +e.target.dataset.cell;
   e.target.value = "";
   if (!f) return;
-  slots[i] = { img: await createImageBitmap(f), z: 1, x: 0, y: 0 };
+  slots[i] = { img: await loadImage(f), z: 1, x: 0, y: 0 };
   redraw();
 };
 
@@ -343,5 +441,33 @@ $("post").onclick = () => {
     encodeURIComponent("[plate] " + name) + "&body=" + encodeURIComponent(body);
   window.open(url, "_blank");
 };
+
+$("q").oninput = e => { query = e.target.value; filter(); };
+$("q").onkeydown = e => { if (e.key === "Escape") { e.target.value = ""; query = ""; filter(); e.target.blur(); } };
+
+$("list").addEventListener("keydown", e => {
+  const d = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
+  if (!d) return;
+  const tiles = [...document.querySelectorAll(".tile:not([hidden])")];
+  const i = tiles.indexOf(document.activeElement);
+  if (i < 0) return;
+  e.preventDefault();
+  const n = tiles[Math.min(tiles.length - 1, Math.max(0, i + d))];
+  n.focus();
+  n.click();
+});
+
+document.addEventListener("keydown", e => {
+  if (e.key === "/" && document.activeElement.tagName !== "INPUT") {
+    e.preventDefault();
+    $("q").focus();
+  }
+});
+
+window.addEventListener("hashchange", pickFromHash);
+
+if ("serviceWorker" in navigator && location.protocol !== "file:") {
+  navigator.serviceWorker.register("sw.js");
+}
 
 boot();

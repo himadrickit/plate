@@ -31,17 +31,24 @@ Cells are drawn in order. Photos are never stored in a plate.
 
 ## layout
 
-    index.html  style.css  app.js  plate.js  plates.txt
+    index.html  style.css  app.js  plate.js  plates.bundle
     templates/<category>/<name>.plate    curated by hand
     community/<name>-<issue>.plate       opened by the action, merge or close
     .github/check.sh                     validates posted plates
     .github/workflows/post.yml           issue -> pull request
-    .github/workflows/index.yml          rebuilds plates.txt on push
+    .github/workflows/index.yml          rebuilds plates.bundle on push
 
 ## editing
 
 Click a cell to select it (blue outline). Split it in two, remove it, zoom or
 clear its photo. Save the result as a .plate or post it.
+
+## speed
+
+build.sh packs every .plate into plates.bundle (one request instead of ~60);
+index.yml runs it on push. Run `sh build.sh` yourself after adding a template
+locally. sw.js caches the site for instant repeat loads and offline use; after a
+deploy the new version shows on the second visit.
 
 ## posting
 
