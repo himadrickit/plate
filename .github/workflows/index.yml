@@ -1,0 +1,23 @@
+name: plate-index
+on:
+  push:
+    branches: [main]
+    paths: ["templates/**", "community/**"]
+
+permissions:
+  contents: write
+
+jobs:
+  index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          find templates community -name '*.plate' | sort > plates.txt
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+          git add plates.txt
+          if ! git diff --cached --quiet; then
+            git commit -m "update plates.txt"
+            git push
+          fi

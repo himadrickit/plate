@@ -1,0 +1,9 @@
+name = Cover
+category = magazine
+canvas = 1080x1350
+gap = 10
+bg = #111111
+cell = 0 0 100 65
+cell = 0 65 33.33 35
+cell = 33.33 65 33.33 35
+cell = 66.66 65 33.34 35

@@ -1,0 +1,5 @@
+templates/grid/duo.plate
+templates/grid/quad.plate
+templates/grid/trio.plate
+templates/magazine/cover.plate
+templates/story/stack.plate

@@ -1,0 +1,32 @@
+name: plate-to-pr
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  pr:
+    if: startsWith(github.event.issue.title, '[plate]')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: extract and check
+        env:
+          BODY: ${{ github.event.issue.body }}
+          NUM: ${{ github.event.issue.number }}
+        run: |
+          printf '%s' "$BODY" | tr -d '\r' | sed -n '/^```plate/,/^```/p' | sed '1d;$d' > new.plate
+          sh .github/check.sh new.plate
+          name=$(sed -n 's/^name *= *//p' new.plate | head -1 | tr 'A-Z ' 'a-z-' | tr -cd 'a-z0-9-')
+          mkdir -p community
+          mv new.plate "community/${name:-plate}-${NUM}.plate"
+      - uses: peter-evans/create-pull-request@v6
+        with:
+          branch: plate/${{ github.event.issue.number }}
+          title: "plate: from #${{ github.event.issue.number }}"
+          body: "Closes #${{ github.event.issue.number }}"
+          commit-message: "add community plate"
+          add-paths: community/

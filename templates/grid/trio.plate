@@ -1,0 +1,8 @@
+name = Trio
+category = grid
+canvas = 1080x1080
+gap = 8
+bg = #ffffff
+cell = 0 0 50 100
+cell = 50 0 50 50
+cell = 50 50 50 50
