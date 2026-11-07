@@ -1,0 +1,10 @@
+name = Lookbook
+category = magazine
+canvas = 1080x1350
+gap = 10
+bg = #ffffff
+cell = 0 0 58 60
+cell = 58 0 42 35
+cell = 58 35 42 25
+cell = 0 60 40 40
+cell = 40 60 60 40

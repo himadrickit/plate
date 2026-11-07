@@ -14,45 +14,108 @@ let sel = 0;
 function rect(p, c) {
   const g = p.gap / 2;
   return {
-    x: c[0] / 100 * p.w + g,
-    y: c[1] / 100 * p.h + g,
-    w: c[2] / 100 * p.w - p.gap,
-    h: c[3] / 100 * p.h - p.gap,
+    x: c.x / 100 * p.w + g,
+    y: c.y / 100 * p.h + g,
+    w: c.w / 100 * p.w - p.gap,
+    h: c.h / 100 * p.h - p.gap,
   };
+}
+
+function trace(c, shape, x, y, w, h, rad) {
+  const cx = x + w / 2, cy = y + h / 2;
+  c.beginPath();
+  if (shape === "ellipse") {
+    c.ellipse(cx, cy, w / 2, h / 2, 0, 0, Math.PI * 2);
+  } else if (shape === "diamond") {
+    c.moveTo(cx, y); c.lineTo(x + w, cy); c.lineTo(cx, y + h); c.lineTo(x, cy);
+    c.closePath();
+  } else if (shape === "hex") {
+    const q = w / 4;
+    c.moveTo(x + q, y); c.lineTo(x + w - q, y); c.lineTo(x + w, cy);
+    c.lineTo(x + w - q, y + h); c.lineTo(x + q, y + h); c.lineTo(x, cy);
+    c.closePath();
+  } else if (shape === "tri") {
+    c.moveTo(cx, y); c.lineTo(x + w, y + h); c.lineTo(x, y + h);
+    c.closePath();
+  } else if (shape === "arch") {
+    c.moveTo(x, y + h); c.lineTo(x, y + w / 2);
+    c.arc(cx, y + w / 2, w / 2, Math.PI, 0);
+    c.lineTo(x + w, y + h);
+    c.closePath();
+  } else if (shape === "heart") {
+    c.moveTo(cx, y + h);
+    c.bezierCurveTo(x - w * 0.1, y + h * 0.55, x + w * 0.1, y - h * 0.1, cx, y + h * 0.3);
+    c.bezierCurveTo(x + w * 0.9, y - h * 0.1, x + w * 1.1, y + h * 0.55, cx, y + h);
+    c.closePath();
+  } else {
+    c.roundRect(x, y, w, h, rad);
+  }
 }
 
 function paint(c, p, items, s, hint, sel) {
   c.setTransform(s, 0, 0, s, 0, 0);
-  c.fillStyle = p.bg;
+  c.shadowColor = "transparent";
+  if (p.bg2) {
+    const g = c.createLinearGradient(0, 0, 0, p.h);
+    g.addColorStop(0, p.bg);
+    g.addColorStop(1, p.bg2);
+    c.fillStyle = g;
+  } else {
+    c.fillStyle = p.bg;
+  }
   c.fillRect(0, 0, p.w, p.h);
   p.cells.forEach((cell, i) => {
     const r = rect(p, cell);
     const it = items && items[i];
+    const rad = cell.r == null ? p.radius : cell.r;
+    const frame = cell.border > 0 || cell.bottom > 0;
     c.save();
-    c.beginPath();
-    c.roundRect(r.x, r.y, r.w, r.h, p.radius);
+    c.translate(r.x + r.w / 2, r.y + r.h / 2);
+    c.rotate(cell.rot * Math.PI / 180);
+    let x = -r.w / 2, y = -r.h / 2, w = r.w, h = r.h;
+    if (frame || cell.shadow) {
+      if (cell.shadow) {
+        c.shadowColor = "rgba(0,0,0,0.35)";
+        c.shadowBlur = 24 * s;
+        c.shadowOffsetY = 8 * s;
+      }
+      c.fillStyle = frame ? cell.bc : "#ffffff";
+      trace(c, cell.shape, x, y, w, h, rad);
+      c.fill();
+      c.shadowColor = "transparent";
+    }
+    if (frame) {
+      x += cell.border;
+      y += cell.border;
+      w = Math.max(1, w - cell.border * 2);
+      h = Math.max(1, h - cell.border * 2 - cell.bottom);
+    }
+    c.save();
+    trace(c, cell.shape, x, y, w, h, frame ? 0 : rad);
     c.clip();
     if (it && it.img) {
-      const f = Math.max(r.w / it.img.width, r.h / it.img.height) * it.z;
-      const w = it.img.width * f, h = it.img.height * f;
-      c.drawImage(it.img, r.x + (r.w - w) / 2 + it.x, r.y + (r.h - h) / 2 + it.y, w, h);
+      const f = Math.max(w / it.img.width, h / it.img.height) * it.z;
+      const iw = it.img.width * f, ih = it.img.height * f;
+      c.drawImage(it.img, x + (w - iw) / 2 + it.x, y + (h - ih) / 2 + it.y, iw, ih);
     } else {
       c.fillStyle = "#cfcfcf";
-      c.fillRect(r.x, r.y, r.w, r.h);
+      c.fillRect(x - 1, y - 1, w + 2, h + 2);
       if (hint) {
         c.fillStyle = "#888";
-        c.font = Math.min(r.w, r.h) / 4 + "px monospace";
+        c.font = Math.min(w, h) / 4 + "px monospace";
         c.textAlign = "center";
         c.textBaseline = "middle";
-        c.fillText("+", r.x + r.w / 2, r.y + r.h / 2);
+        c.fillText("+", x + w / 2, y + h / 2);
       }
     }
     c.restore();
     if (hint && i === sel) {
       c.strokeStyle = "#3a9bff";
       c.lineWidth = 5;
-      c.strokeRect(r.x, r.y, r.w, r.h);
+      trace(c, cell.shape, -r.w / 2, -r.h / 2, r.w, r.h, rad);
+      c.stroke();
     }
+    c.restore();
   });
 }
 
@@ -140,10 +203,16 @@ function at(e) {
 }
 
 function hit(pt) {
-  return plate.cells.findIndex(c => {
+  for (let i = plate.cells.length - 1; i >= 0; i--) {
+    const c = plate.cells[i];
     const r = rect(plate, c);
-    return pt.x >= r.x && pt.x <= r.x + r.w && pt.y >= r.y && pt.y <= r.y + r.h;
-  });
+    const a = -c.rot * Math.PI / 180;
+    const dx = pt.x - (r.x + r.w / 2), dy = pt.y - (r.y + r.h / 2);
+    const lx = dx * Math.cos(a) - dy * Math.sin(a);
+    const ly = dx * Math.sin(a) + dy * Math.cos(a);
+    if (Math.abs(lx) <= r.w / 2 && Math.abs(ly) <= r.h / 2) return i;
+  }
+  return -1;
 }
 
 cv.addEventListener("pointerdown", e => {
@@ -198,7 +267,7 @@ $("pick").onchange = async e => {
 for (const id of ["gap", "radius"]) {
   $(id).oninput = e => { plate[id] = +e.target.value; redraw(); };
 }
-$("bg").oninput = e => { plate.bg = e.target.value; redraw(); };
+$("bg").oninput = e => { plate.bg = e.target.value; plate.bg2 = ""; redraw(); };
 
 $("zoom").oninput = e => {
   if (!slots[sel]) return;
@@ -215,12 +284,15 @@ $("clear").onclick = () => {
 const r2 = n => Math.round(n * 100) / 100;
 
 function split(vertical) {
-  const [x, y, w, h] = plate.cells[sel];
-  const pair = vertical
-    ? [[x, y, r2(w / 2), h], [r2(x + w / 2), y, r2(w - r2(w / 2)), h]]
-    : [[x, y, w, r2(h / 2)], [x, r2(y + h / 2), w, r2(h - r2(h / 2))]];
-  if (plate.cells.length >= 24) return;
-  plate.cells.splice(sel, 1, pair[0], pair[1]);
+  if (plate.cells.length >= 40) return;
+  const c = plate.cells[sel];
+  const a = { ...c }, b = { ...c };
+  if (vertical) {
+    a.w = r2(c.w / 2); b.x = r2(c.x + a.w); b.w = r2(c.w - a.w);
+  } else {
+    a.h = r2(c.h / 2); b.y = r2(c.y + a.h); b.h = r2(c.h - a.h);
+  }
+  plate.cells.splice(sel, 1, a, b);
   slots.splice(sel + 1, 0, { img: null, z: 1, x: 0, y: 0 });
   redraw();
 }

@@ -1,0 +1,10 @@
+name = Timeline
+category = grid
+canvas = 1800x400
+gap = 8
+bg = #ffffff
+cell = 0 0 20 100
+cell = 20 0 20 100
+cell = 40 0 20 100
+cell = 60 0 20 100
+cell = 80 0 20 100

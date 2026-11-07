@@ -1,0 +1,9 @@
+name = Quad
+category = story
+canvas = 1080x1920
+gap = 8
+bg = #ffffff
+cell = 0 0 50 50
+cell = 50 0 50 50
+cell = 0 50 50 50
+cell = 50 50 50 50

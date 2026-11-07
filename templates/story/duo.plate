@@ -1,0 +1,7 @@
+name = Duo
+category = story
+canvas = 1080x1920
+gap = 8
+bg = #ffffff
+cell = 0 0 100 50
+cell = 0 50 100 50

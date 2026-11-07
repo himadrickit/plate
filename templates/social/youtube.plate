@@ -1,0 +1,8 @@
+name = Youtube
+category = social
+canvas = 1280x720
+gap = 8
+bg = #111111
+cell = 0 0 66.67 100
+cell = 66.67 0 33.33 50
+cell = 66.67 50 33.33 50

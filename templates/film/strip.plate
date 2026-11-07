@@ -1,0 +1,10 @@
+name = Strip
+category = film
+canvas = 600x1800
+gap = 0
+radius = 6
+bg = #111111
+cell = 9 1.5 82 22
+cell = 9 26 82 22
+cell = 9 50.5 82 22
+cell = 9 75 82 22

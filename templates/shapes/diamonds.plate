@@ -1,0 +1,12 @@
+name = Diamonds
+category = shapes
+canvas = 1200x800
+gap = 6
+bg = #222222
+cell = 0 0 33.33 50 shape=diamond
+cell = 33.33 0 33.33 50 shape=diamond
+cell = 66.67 0 33.33 50 shape=diamond
+cell = -16.67 50 33.33 50 shape=diamond
+cell = 16.67 50 33.33 50 shape=diamond
+cell = 50 50 33.33 50 shape=diamond
+cell = 83.33 50 33.33 50 shape=diamond

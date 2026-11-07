@@ -1,0 +1,8 @@
+name = Banner
+category = social
+canvas = 1500x500
+gap = 8
+bg = #111111
+cell = 0 0 50 100
+cell = 50 0 25 100
+cell = 75 0 25 100

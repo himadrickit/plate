@@ -1,0 +1,9 @@
+name = Wall
+category = polaroid
+canvas = 1080x1080
+gap = 0
+bg = #ffffff
+cell = 3 3 45 45 border=14 bottom=50 shadow=1
+cell = 52 3 45 45 border=14 bottom=50 shadow=1
+cell = 3 52 45 45 border=14 bottom=50 shadow=1
+cell = 52 52 45 45 border=14 bottom=50 shadow=1

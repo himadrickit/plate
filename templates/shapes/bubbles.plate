@@ -1,0 +1,10 @@
+name = Bubbles
+category = shapes
+canvas = 1080x1080
+gap = 0
+bg = #0f1b2d
+cell = 4 6 52 52 shape=ellipse shadow=1
+cell = 54 4 30 30 shape=ellipse shadow=1
+cell = 58 36 38 38 shape=ellipse shadow=1
+cell = 8 60 30 30 shape=ellipse shadow=1
+cell = 36 62 36 36 shape=ellipse shadow=1

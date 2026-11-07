@@ -1,0 +1,12 @@
+name = Mood Board
+category = mosaic
+canvas = 1080x1350
+gap = 8
+bg = #f1ece4
+cell = 0 0 40 50
+cell = 40 0 30 30
+cell = 70 0 30 60
+cell = 40 30 30 20
+cell = 0 50 25 50
+cell = 25 50 45 50
+cell = 70 60 30 40

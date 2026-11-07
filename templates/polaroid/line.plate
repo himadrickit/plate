@@ -1,0 +1,9 @@
+name = Line
+category = polaroid
+canvas = 1620x1080
+gap = 0
+bg = #e9e2d4
+cell = 2 28 22 40 rot=-6 border=16 bottom=64 shadow=1
+cell = 26 22 22 40 rot=4 border=16 bottom=64 shadow=1
+cell = 50 28 22 40 rot=-3 border=16 bottom=64 shadow=1
+cell = 74 22 22 40 rot=6 border=16 bottom=64 shadow=1

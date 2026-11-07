@@ -1,0 +1,12 @@
+name = Brick
+category = mosaic
+canvas = 1080x1080
+gap = 8
+bg = #ffffff
+cell = 0 0 40 33.33
+cell = 40 0 60 33.33
+cell = 0 33.33 60 33.33
+cell = 60 33.33 40 33.33
+cell = 0 66.67 30 33.33
+cell = 30 66.67 40 33.33
+cell = 70 66.67 30 33.33

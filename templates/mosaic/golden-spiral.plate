@@ -1,0 +1,10 @@
+name = Golden Spiral
+category = mosaic
+canvas = 1618x1000
+gap = 6
+bg = #ffffff
+cell = 0 0 61.8 100
+cell = 61.8 0 38.2 61.8
+cell = 76.39 61.8 23.61 38.2
+cell = 61.8 76.4 14.59 23.6
+cell = 61.8 61.8 14.59 14.6

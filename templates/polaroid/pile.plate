@@ -1,0 +1,9 @@
+name = Pile
+category = polaroid
+canvas = 1080x1080
+gap = 0
+bg = #e6dccb
+cell = 16 6 48 56 rot=-7 border=16 bottom=64 shadow=1
+cell = 40 12 48 56 rot=6 border=16 bottom=64 shadow=1
+cell = 14 40 48 56 rot=4 border=16 bottom=64 shadow=1
+cell = 38 42 48 56 rot=-4 border=16 bottom=64 shadow=1

@@ -1,0 +1,10 @@
+name = Scatter5
+category = polaroid
+canvas = 1080x1080
+gap = 0
+bg = #d8cfc0
+cell = 4 6 34 40 rot=-8 border=16 bottom=64 shadow=1
+cell = 60 4 34 40 rot=6 border=16 bottom=64 shadow=1
+cell = 30 28 34 40 rot=-3 border=16 bottom=64 shadow=1
+cell = 6 54 34 40 rot=5 border=16 bottom=64 shadow=1
+cell = 58 52 34 40 rot=-5 border=16 bottom=64 shadow=1

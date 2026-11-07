@@ -1,0 +1,8 @@
+name = Arches
+category = shapes
+canvas = 1350x1080
+gap = 0
+bg = #efe3d3
+cell = 6 18 26 70 shape=arch
+cell = 37 8 26 80 shape=arch
+cell = 68 18 26 70 shape=arch

@@ -1,0 +1,8 @@
+name = Columns
+category = grid
+canvas = 1080x1350
+gap = 8
+bg = #ffffff
+cell = 0 0 33.33 100
+cell = 33.33 0 33.33 100
+cell = 66.67 0 33.33 100

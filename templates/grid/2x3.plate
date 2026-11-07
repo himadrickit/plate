@@ -1,0 +1,11 @@
+name = 2x3
+category = grid
+canvas = 1080x1620
+gap = 8
+bg = #ffffff
+cell = 0 0 50 33.33
+cell = 50 0 50 33.33
+cell = 0 33.33 50 33.33
+cell = 50 33.33 50 33.33
+cell = 0 66.67 50 33.33
+cell = 50 66.67 50 33.33

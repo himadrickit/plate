@@ -1,0 +1,8 @@
+name = Scatter3
+category = polaroid
+canvas = 1080x1080
+gap = 0
+bg = #d8cfc0
+cell = 8 12 38 44 rot=-6 border=16 bottom=64 shadow=1
+cell = 52 8 38 44 rot=5 border=16 bottom=64 shadow=1
+cell = 28 50 38 44 rot=-2 border=16 bottom=64 shadow=1

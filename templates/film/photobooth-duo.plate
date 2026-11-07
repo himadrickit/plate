@@ -1,0 +1,13 @@
+name = Photobooth Duo
+category = film
+canvas = 1200x1800
+gap = 0
+bg = #ffffff
+cell = 4 2.5 42 21
+cell = 4 25.5 42 21
+cell = 4 48.5 42 21
+cell = 4 71.5 42 21
+cell = 54 2.5 42 21
+cell = 54 25.5 42 21
+cell = 54 48.5 42 21
+cell = 54 71.5 42 21

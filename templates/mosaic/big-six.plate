@@ -1,0 +1,11 @@
+name = Big Six
+category = mosaic
+canvas = 1080x1080
+gap = 8
+bg = #ffffff
+cell = 0 0 66.67 66.67
+cell = 66.67 0 33.33 33.33
+cell = 66.67 33.33 33.33 33.34
+cell = 0 66.67 33.33 33.33
+cell = 33.33 66.67 33.34 33.33
+cell = 66.67 66.67 33.33 33.33

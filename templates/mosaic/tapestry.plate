@@ -1,0 +1,11 @@
+name = Tapestry
+category = mosaic
+canvas = 1080x1350
+gap = 8
+bg = #ffffff
+cell = 0 0 33.33 55
+cell = 0 55 33.33 45
+cell = 33.33 0 33.33 40
+cell = 33.33 40 33.33 60
+cell = 66.67 0 33.33 65
+cell = 66.67 65 33.33 35

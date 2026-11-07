@@ -1,0 +1,7 @@
+name = Pair
+category = story
+canvas = 1080x1920
+gap = 0
+bg = #f4ede4
+cell = 8 5 78 47 rot=-3 border=16 bottom=64 shadow=1
+cell = 14 50 78 47 rot=3 border=16 bottom=64 shadow=1

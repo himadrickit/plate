@@ -1,0 +1,10 @@
+name = Pinwheel
+category = mosaic
+canvas = 1080x1080
+gap = 8
+bg = #ffffff
+cell = 0 0 60 40
+cell = 60 0 40 60
+cell = 40 60 60 40
+cell = 0 40 40 60
+cell = 40 40 20 20

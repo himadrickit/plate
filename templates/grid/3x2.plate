@@ -1,0 +1,11 @@
+name = 3x2
+category = grid
+canvas = 1620x1080
+gap = 8
+bg = #ffffff
+cell = 0 0 33.33 50
+cell = 33.33 0 33.33 50
+cell = 66.67 0 33.33 50
+cell = 0 50 33.33 50
+cell = 33.33 50 33.33 50
+cell = 66.67 50 33.33 50

@@ -1,0 +1,12 @@
+name = Windows
+category = mosaic
+canvas = 1080x1350
+gap = 8
+bg = #ffffff
+cell = 0 0 30 60
+cell = 0 60 30 40
+cell = 30 0 40 35
+cell = 30 35 40 30
+cell = 30 65 40 35
+cell = 70 0 30 40
+cell = 70 40 30 60

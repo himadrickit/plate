@@ -1,0 +1,14 @@
+name = Heart Grid
+category = shapes
+canvas = 1080x1080
+gap = 10
+bg = #ffd9e2
+cell = 0 0 33.33 33.33 shape=heart
+cell = 33.33 0 33.33 33.33 shape=heart
+cell = 66.67 0 33.33 33.33 shape=heart
+cell = 0 33.33 33.33 33.33 shape=heart
+cell = 33.33 33.33 33.33 33.33 shape=heart
+cell = 66.67 33.33 33.33 33.33 shape=heart
+cell = 0 66.67 33.33 33.33 shape=heart
+cell = 33.33 66.67 33.33 33.33 shape=heart
+cell = 66.67 66.67 33.33 33.33 shape=heart

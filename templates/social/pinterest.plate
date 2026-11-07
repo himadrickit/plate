@@ -1,0 +1,9 @@
+name = Pinterest
+category = social
+canvas = 1000x1500
+gap = 8
+bg = #ffffff
+cell = 0 0 100 40
+cell = 0 40 50 30
+cell = 50 40 50 30
+cell = 0 70 100 30

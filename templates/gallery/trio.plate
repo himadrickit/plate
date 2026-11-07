@@ -1,0 +1,8 @@
+name = Trio
+category = gallery
+canvas = 1620x1080
+gap = 0
+bg = #bfb8ad
+cell = 4 12 30 76 border=24 shadow=1
+cell = 35 12 30 76 border=24 shadow=1
+cell = 66 12 30 76 border=24 shadow=1

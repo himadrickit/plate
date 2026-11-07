@@ -1,0 +1,10 @@
+name = Frame In
+category = mosaic
+canvas = 1080x1080
+gap = 8
+bg = #ffffff
+cell = 0 0 80 20
+cell = 80 0 20 80
+cell = 20 80 80 20
+cell = 0 20 20 80
+cell = 20 20 60 60

@@ -1,0 +1,6 @@
+name = Matted
+category = gallery
+canvas = 1080x1080
+gap = 0
+bg = #cfc7ba
+cell = 10 10 80 80 border=48 bc=#fbfbf8 shadow=1

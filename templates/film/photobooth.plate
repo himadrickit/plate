@@ -1,0 +1,9 @@
+name = Photobooth
+category = film
+canvas = 600x1800
+gap = 0
+bg = #ffffff
+cell = 8 2.5 84 21
+cell = 8 25.5 84 21
+cell = 8 48.5 84 21
+cell = 8 71.5 84 21

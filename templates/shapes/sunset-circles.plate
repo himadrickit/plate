@@ -1,0 +1,8 @@
+name = Sunset Circles
+category = shapes
+canvas = 1080x1350
+gap = 0
+bg = #ff9a8b
+bg2 = #6a82fb
+cell = 8 5 56 44.8 shape=ellipse shadow=1
+cell = 36 50 56 44.8 shape=ellipse shadow=1

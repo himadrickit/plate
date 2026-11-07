@@ -1,0 +1,8 @@
+name = Hearts
+category = shapes
+canvas = 1080x1080
+gap = 0
+bg = #ffe3ea
+cell = 4 28 46 46 shape=heart rot=-10 shadow=1
+cell = 50 28 46 46 shape=heart rot=10 shadow=1
+cell = 27 46 46 46 shape=heart shadow=1

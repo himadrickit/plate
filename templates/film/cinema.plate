@@ -1,0 +1,7 @@
+name = Cinema
+category = film
+canvas = 1440x1260
+gap = 0
+bg = #000000
+cell = 5 4 90 43.7
+cell = 5 52.3 90 43.7

@@ -1,0 +1,15 @@
+name = Honeycomb
+category = shapes
+canvas = 1300x1039
+gap = 10
+bg = #ffffff
+cell = 0 0 30.77 33.34 shape=hex
+cell = 0 33.34 30.77 33.34 shape=hex
+cell = 0 66.68 30.77 33.34 shape=hex
+cell = 23.08 16.67 30.77 33.34 shape=hex
+cell = 23.08 50.01 30.77 33.34 shape=hex
+cell = 46.15 0 30.77 33.34 shape=hex
+cell = 46.15 33.34 30.77 33.34 shape=hex
+cell = 46.15 66.68 30.77 33.34 shape=hex
+cell = 69.23 16.67 30.77 33.34 shape=hex
+cell = 69.23 50.01 30.77 33.34 shape=hex

@@ -1,0 +1,9 @@
+name = Editorial
+category = magazine
+canvas = 1080x1350
+gap = 10
+bg = #f5f1ea
+cell = 0 0 100 55
+cell = 0 55 50 45
+cell = 50 55 50 22.5
+cell = 50 77.5 50 22.5

@@ -1,0 +1,9 @@
+name = Feature
+category = magazine
+canvas = 1080x1350
+gap = 10
+bg = #111111
+cell = 0 0 62 100
+cell = 62 0 38 50
+cell = 62 50 38 25
+cell = 62 75 38 25

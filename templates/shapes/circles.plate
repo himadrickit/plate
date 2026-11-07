@@ -1,0 +1,8 @@
+name = Circles
+category = shapes
+canvas = 1500x1000
+gap = 0
+bg = #f4efe6
+cell = 5 30 26.67 40 shape=ellipse shadow=1
+cell = 36.67 30 26.67 40 shape=ellipse shadow=1
+cell = 68.33 30 26.67 40 shape=ellipse shadow=1

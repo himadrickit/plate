@@ -11,6 +11,22 @@ Plain text, one `key = value` per line. `#` starts a comment.
     bg       = #ffffff           # 6 digit hex
     cell     = x y w h           # percent of canvas, one line per cell
 
+Cells are drawn in order, so later cells sit on top. x y w h may range
+from -50 to 150 (cells can overflow the canvas). Max 40 cells.
+
+    bg2 = #6a82fb       optional, makes bg a top to bottom gradient
+
+A cell can take options after the four numbers:
+
+    rot=-6              rotation in degrees
+    shape=heart         rect ellipse diamond hex heart tri arch
+    r=12                corner radius for this cell (rect only)
+    border=16 bottom=64 frame in px, bottom adds extra space (polaroid)
+    bc=#ffffff          frame color
+    shadow=1            drop shadow
+
+Example: cell = 8 12 38 44 rot=-6 border=16 bottom=64 shadow=1
+
 Cells are drawn in order. Photos are never stored in a plate.
 
 ## layout
